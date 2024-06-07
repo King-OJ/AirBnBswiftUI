@@ -7,28 +7,57 @@
 
 import SwiftUI
 
+
 struct ExploreView: View {
+    
+    @State private var showSearchDestinationView = false
+    
     var body: some View {
         
         NavigationStack{
-            VStack {
-                SearchAndFilterView()
-                    .padding(.horizontal)
             
-            
-                ScrollView {
-                    
-                    LazyVStack(spacing: 32, content: {
-                        ForEach(1...5, id: \.self) { listing in
-                            ListingItemView()
-                                .frame(height: 400)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                        }
-                    })
-                    .padding()
-                }
-            
+            if showSearchDestinationView {
+                SearchDestinationView(showView: $showSearchDestinationView)
             }
+            else {
+                VStack {
+                    SearchAndFilterView()
+                        .padding(.horizontal)
+                        .onTapGesture {
+                            withAnimation(.snappy) {
+                                showSearchDestinationView.toggle()
+                            }
+                        }
+                
+                
+                    ScrollView {
+                        
+                        LazyVStack(spacing: 32, content: {
+                            ForEach(1...5, id: \.self) { listing in
+                                NavigationLink {
+                                    ListingDetailView()
+                                        .navigationBarBackButtonHidden()
+                                } label: {
+                                    ListingItemView()
+                                        .frame(height: 400)
+                                }
+
+    //                            NavigationLink(value: listing) {
+    //                                ListingItemView()
+    //                                    .frame(height: 400)
+    //                            }
+                                
+                            }
+                        })
+                        .padding()
+                    }
+    //                .navigationDestination(for: Int.self) { listing in
+    //                    ListingDetailView()
+    //                }
+                
+                }
+            }
+            
         }
     }
 }

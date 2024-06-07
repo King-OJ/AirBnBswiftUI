@@ -1,5 +1,5 @@
 //
-//  CTAbutton.swift
+//  CTAbuttonView.swift
 //  AirBnBswiftUI
 //
 //  Created by King OJ on 06/06/2024.
@@ -7,12 +7,25 @@
 
 import SwiftUI
 
-struct CTAbutton: View {
+struct CTAbuttonView: View {
+    
+    var title: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            //
+        } label: {
+            Text(title)
+                .foregroundStyle(.white)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, minHeight: 48)
+                .background(.pink)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
     }
 }
 
 #Preview {
-    CTAbutton()
+    CTAbuttonView(title: "Log in")
 }
