@@ -52,6 +52,7 @@ struct SearchDestinationView: View {
                 
             }
             
+            //where to selection
             VStack(alignment:.leading) {
                 
                 if selectedSearchField == .location {

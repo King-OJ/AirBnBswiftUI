@@ -161,11 +161,11 @@ struct ListingDetailView: View {
                 //fixed bottom reserve button
                 VStack(content: {
                     Divider()
-                        .padding(.bottom)
+                        .padding(.bottom, 4)
                     
                     HStack(content: {
                         //info view
-                        VStack(alignment: .leading ,content: {
+                        VStack(alignment: .leading, spacing: 2 ,content: {
                             Text("$500")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
@@ -195,7 +195,8 @@ struct ListingDetailView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         })
                     })
-                    .padding()
+                    .padding(.vertical)
+                    .padding(.horizontal, 20)
                 })
                 .padding(.bottom)
                 .background(.white)
@@ -204,19 +205,40 @@ struct ListingDetailView: View {
             }
             
             
-            Button(action: {
-                dismiss()
-            }, label: {
-                Image(systemName: "chevron.left")
-                    .foregroundStyle(.black)
-                    .background{
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 34, height: 34)
-                    }
-                    .padding(32)
-            })
+//            Button(action: {
+//                dismiss()
+//            }, label: {
+//                Image(systemName: "chevron.left")
+//                    .foregroundStyle(.black)
+//                    .background{
+//                        Circle()
+//                            .fill(.white)
+//                            .frame(width: 34, height: 34)
+//                    }
+//                    .padding(32)
+//                    
+//            })
+            
+            
+            
+            VStack {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.black)
+                        .padding(12)
+                        
+                })
+                .background(.white)
+                .clipShape(Circle())
+            }
+            .padding(.leading, 16)
+            .padding(.top, 32)
+            
+            
         }
+        .toolbar(.hidden, for: .tabBar)
         .ignoresSafeArea()
     }
 }
