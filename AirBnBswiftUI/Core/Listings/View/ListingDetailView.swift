@@ -11,6 +11,7 @@ import MapKit
 struct ListingDetailView: View {
     
     @Environment(\.dismiss) var dismiss
+    var listing: Listing
     
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -18,11 +19,11 @@ struct ListingDetailView: View {
                 
                 ScrollView {
                    
-                    ListingImagesCarouselView()
+                    ListingImagesCarouselView(listing: listing)
                             .frame(height: 320)
                     
                     VStack(alignment: .leading, spacing: 12, content: {
-                        Text("Maimi Villa")
+                        Text(listing.title)
                             .font(.title)
                             .fontWeight(.semibold)
                         
@@ -39,7 +40,7 @@ struct ListingDetailView: View {
                             })
                             .foregroundStyle(.black)
                             
-                            Text("Maimi, Florida")
+                            Text("\(listing.city), \(listing.state)")
                         })
                         .font(.caption)
                     })
@@ -51,19 +52,19 @@ struct ListingDetailView: View {
                     //host info
                     HStack{
                         VStack(alignment: .leading, spacing: 4 ,content: {
-                            Text("Entire Villa hosted by KingOJ")
+                            Text("Entire \(listing.type) hosted by \(listing.ownerName)")
                                 .font(.headline)
                                 
                             
                            
-                            Text("4 guests - 4 bedrooms - 4 beds - 3 baths")
+                            Text("\(listing.numOfguests) guests - \(listing.numOfBedrooms) bedrooms - \(listing.numOfBeds) - beds - \(listing.numOfBathrooms) baths")
                                 .font(.caption)
                         })
                         .frame(maxWidth: 250, alignment: .leading)
                         
                         Spacer()
                         
-                        Image("profile-img")
+                        Image(listing.ownerImgUrl)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 64, height: 64)
@@ -75,16 +76,16 @@ struct ListingDetailView: View {
                     
                     //listing features
                     VStack(alignment: .leading , spacing: 14 ,content: {
-                        ForEach(0..<2, id: \.self) { feature in
+                        ForEach(listing.categories, id: \.self) { category in
                             HStack(spacing: 12, content: {
-                                Image(systemName: "medal")
+                                Image(systemName: category.iconName)
                                 
                                 VStack(alignment: .leading, content: {
-                                    Text("Superhost")
+                                    Text(category.title)
                                         .font(.footnote)
                                         .fontWeight(.semibold)
                                     
-                                    Text("Superhost are experienced, highly rated hosts who are commited to providing great stars for guests")
+                                    Text(category.description)
                                         .font(.caption)
                                         .foregroundStyle(.gray)
                                 })
@@ -129,12 +130,12 @@ struct ListingDetailView: View {
                     VStack(alignment: .leading ,spacing:14, content: {
                         Text("What this place offers")
                             .font(.headline)
-                        ForEach(1...5, id: \.self) { offer in
+                        ForEach(listing.features, id: \.self) { feature in
                             HStack(content: {
-                                Image(systemName: "wifi")
+                                Image(systemName: feature.iconName)
                                     .frame(width: 32)
                                 
-                                Text("Wifi")
+                                Text(feature.title)
                                     .font(.footnote)
                                 
                                 Spacer()
@@ -166,7 +167,7 @@ struct ListingDetailView: View {
                     HStack(content: {
                         //info view
                         VStack(alignment: .leading, spacing: 2 ,content: {
-                            Text("$500")
+                            Text("$\(listing.pricePerNight)")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                             
@@ -244,5 +245,5 @@ struct ListingDetailView: View {
 }
 
 #Preview {
-    ListingDetailView()
+    ListingDetailView(listing: MockData.shared.listings[0])
 }

@@ -12,6 +12,9 @@ struct ExploreView: View {
     
     @State private var showSearchDestinationView = false
     
+    @StateObject var viewModel = ExploreViewModel(service: ExploreService())
+    
+    
     var body: some View {
         
         NavigationStack{
@@ -33,12 +36,12 @@ struct ExploreView: View {
                     ScrollView {
                         
                         LazyVStack(spacing: 32, content: {
-                            ForEach(1...5, id: \.self) { listing in
+                            ForEach(viewModel.listings) { listing in
                                 NavigationLink {
-                                    ListingDetailView()
+                                    ListingDetailView(listing: listing)
                                         .navigationBarBackButtonHidden()
                                 } label: {
-                                    ListingItemView()
+                                    ListingItemView(listing: listing)
                                         .frame(height: 400)
                                 }
 

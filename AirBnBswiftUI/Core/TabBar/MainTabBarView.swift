@@ -12,6 +12,7 @@ struct MainTabBarView: View {
         TabView {
             ExploreView()
                 .tabItem { Label("Explore", systemImage: "magnifyingglass") }
+                
             
             WishListsView()
                 .tabItem { Label("Wishlists", systemImage: "heart") }
@@ -19,6 +20,7 @@ struct MainTabBarView: View {
             ProfileView()
                 .tabItem { Label("Profile", systemImage: "person") }
         }
+        .tint(.pink)
     }
 }
 
