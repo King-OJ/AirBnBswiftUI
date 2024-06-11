@@ -13,6 +13,16 @@ struct ListingDetailView: View {
     @Environment(\.dismiss) var dismiss
     var listing: Listing
     
+    @State private var cameraPosition: MapCameraPosition
+    
+    init(listing: Listing) {
+        self.listing = listing
+        
+        let region = MKCoordinateRegion(center: .regionForCity(stateName: listing.state) , span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+        
+        self._cameraPosition = State(initialValue: .region(region))
+    }
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             ZStack(alignment: .bottom) {
@@ -52,12 +62,12 @@ struct ListingDetailView: View {
                     //host info
                     HStack{
                         VStack(alignment: .leading, spacing: 4 ,content: {
-                            Text("Entire \(listing.type) hosted by \(listing.ownerName)")
+                            Text("Entire \(listing.type.description) hosted by \(listing.ownerName)")
                                 .font(.headline)
                                 
                             
                            
-                            Text("\(listing.numOfguests) guests - \(listing.numOfBedrooms) bedrooms - \(listing.numOfBeds) - beds - \(listing.numOfBathrooms) baths")
+                            Text("\(listing.numOfguests) guests - \(listing.numOfBedrooms) bedrooms - \(listing.numOfBeds) beds - \(listing.numOfBathrooms) baths")
                                 .font(.caption)
                         })
                         .frame(maxWidth: 250, alignment: .leading)
@@ -105,7 +115,7 @@ struct ListingDetailView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16, content: {
-                                ForEach(1...4, id: \.self) { bedroom in
+                                ForEach(1...listing.numOfBedrooms, id: \.self) { bedroom in
                                     VStack(alignment: .leading, spacing: 6) {
                                         Image(systemName: "bed.double")
                                         
@@ -151,7 +161,7 @@ struct ListingDetailView: View {
                         Text("Where you'll be")
                             .font(.headline)
                         
-                        Map()
+                        Map(position: $cameraPosition)
                             .frame(height: 200)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     }

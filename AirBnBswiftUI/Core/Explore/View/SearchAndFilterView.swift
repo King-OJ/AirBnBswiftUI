@@ -8,18 +8,23 @@
 import SwiftUI
 
 struct SearchAndFilterView: View {
+    
+    @ObservedObject var viewModel: ExploreViewModel
+    
     var body: some View {
         HStack(content: {
             Image(systemName: "magnifyingglass")
             
             VStack(alignment: .leading, spacing: 2, content: {
-                Text("Where to?")
+                Text(viewModel.searchDestination.isEmpty ? "Where to?" : viewModel.searchDestination)
                     .font(.footnote)
                     .fontWeight(.semibold)
                 
-                Text("Anywhere, Any week - Add guests")
+                
+                Text("\(viewModel.searchDestination.isEmpty || !viewModel.searchDestination.isEmpty && viewModel.filteredListings.isEmpty  ? "Anywhere," : "") Any week - Add guests")
                     .font(.caption2)
                     .foregroundStyle(.gray)
+                
             })
             
             Spacer()
@@ -41,5 +46,5 @@ struct SearchAndFilterView: View {
 }
 
 #Preview {
-    SearchAndFilterView()
+    SearchAndFilterView(viewModel: ExploreViewModel(service: ExploreService()))
 }

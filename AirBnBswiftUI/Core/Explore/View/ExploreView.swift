@@ -15,16 +15,17 @@ struct ExploreView: View {
     @StateObject var viewModel = ExploreViewModel(service: ExploreService())
     
     
+    
     var body: some View {
         
         NavigationStack{
             
             if showSearchDestinationView {
-                SearchDestinationView(showView: $showSearchDestinationView)
+                SearchDestinationView(showView: $showSearchDestinationView, viewModel: viewModel)
             }
             else {
                 VStack {
-                    SearchAndFilterView()
+                    SearchAndFilterView(viewModel: viewModel)
                         .padding(.horizontal)
                         .onTapGesture {
                             withAnimation(.snappy) {
@@ -35,7 +36,27 @@ struct ExploreView: View {
                 
                     ScrollView {
                         
-                        LazyVStack(spacing: 32, content: {
+                        LazyVStack(spacing: 30, content: {
+                            if !viewModel.searchDestination.isEmpty
+                                &&
+                                viewModel.filteredListings.isEmpty
+                            {
+                                HStack {
+                                    VStack(alignment: .leading, spacing:6) {
+                                        Text("There is no apartment in \(viewModel.searchDestination)")
+                                            
+                                        
+                                        Text("But here are other suggestions we think you might like")
+                                            .foregroundStyle(.gray)
+                                    }
+                                    .font(.footnote)
+                                    .fontWeight(.semibold)
+                                    
+                                    Spacer()
+                                }
+                                
+                            }
+                                
                             ForEach(viewModel.listings) { listing in
                                 NavigationLink {
                                     ListingDetailView(listing: listing)

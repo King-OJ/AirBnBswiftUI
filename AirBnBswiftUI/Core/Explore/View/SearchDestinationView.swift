@@ -16,8 +16,8 @@ enum searchFieldOptions {
 struct SearchDestinationView: View {
     
     @Binding var showView: Bool
+    @ObservedObject var viewModel: ExploreViewModel
     
-    @State private var destination = ""
     @State private var selectedSearchField: searchFieldOptions = .location
     @State private var startDate = Date()
     @State private var endDate = Date()
@@ -41,9 +41,10 @@ struct SearchDestinationView: View {
                 
                 Spacer()
                 
-                if !destination.isEmpty {
+                if !viewModel.searchDestination.isEmpty {
                     Button("Clear") {
-                        destination = ""
+                        viewModel.searchDestination = "";
+                        viewModel.fetchListingsForSingleLocation()
                     }
                     .foregroundStyle(.black)
                     .font(.subheadline)
@@ -63,8 +64,12 @@ struct SearchDestinationView: View {
                     HStack {
                         Image(systemName: "magnifyingglass")
                         
-                        TextField("Search destination", text: $destination)
+                        TextField("Search destination", text: $viewModel.searchDestination)
                             .font(.subheadline)
+                            .onSubmit {
+                                viewModel.fetchListingsForSingleLocation();
+                                showView.toggle();
+                            }
                             
                     }
                     .frame(height: 44)
@@ -163,7 +168,7 @@ struct SearchDestinationView: View {
 }
 
 #Preview {
-    SearchDestinationView(showView: .constant(false))
+    SearchDestinationView(showView: .constant(false), viewModel: ExploreViewModel(service: ExploreService()))
 }
 
 struct CollapsiblePickerModifier: ViewModifier {
