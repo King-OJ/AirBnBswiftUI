@@ -33,7 +33,7 @@ class ExploreViewModel: ObservableObject {
     }
     
     func fetchListingsForSingleLocation(){
-        let filteredListings = listings.filter {Listing in
+        let filteredListings = listingsCopy.filter {Listing in
             Listing.state.lowercased() == searchDestination.lowercased() ||
             Listing.city.lowercased() == searchDestination.lowercased()
         }
